@@ -5,12 +5,20 @@ import { useState } from "react";
 
 function App() {
   const [peso, setPeso] = useState(0);
-  const [altura, setAltura] = useState(0) 
+  const [altura, setAltura] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [resultado, setResultado] = useState("");
 
   function clickCalcular(){
+    setLoading(true)
     const valorImc = peso / (altura * altura)
 
-    console.log(valorImc)
+    setResultado(valorImc.toFixed(2))
+    setTimeout(
+     () => {
+      setLoading(false)
+     }, 1500
+    )
   }
 
   return (
@@ -73,9 +81,35 @@ function App() {
                 className="mt-[20px] w-full h-[50px] bg-[#20a54c] rounded-lg text-white font-bold"
                 onClick={clickCalcular}
                 >
-                Calcular
+                {
+                  loading ? (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-[30px] h-[30px] border-2 border-t-[4px] border-white rounded-full animate-spin"> </div>
+                      </div>
+                  ) : "Calcular"
+                }
               </button>
           </div>
+          {
+            resultado && (
+              <div className="w-full flex justify-center flex-col">
+                  <div className="w-full bg-gray-500 h-[1px] mt-4"></div>
+                  <div className="w-full py-4 flex">
+                    <div className="w-[20%] flex flex-col items-center justify-center">
+                      <p className="text-[40px] text-[#20a54c]">{resultado}</p>
+                      <p className="text-[18px] text-white">Seu IMC</p>
+                    </div>
+                    <div className="w-[80%] flex items-center justify-center">
+                      <p className="text-[20px] text-white">Seu peso está ideal</p>
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-500 h-[1px] mt-4"></div>
+                  <div className="w-full flex items-center justify-center">
+                    <a className="text-[#20a54c] mt-4" href="">Mais informações sobre o IMC</a>
+                  </div>
+              </div>
+            )
+          }
         </div>
       </div>
     </div>
